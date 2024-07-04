@@ -65,20 +65,33 @@ static std::string getSBMLString() {
 
 int main()
 {
-    std::ifstream sbmlFile("Resources\\EuroMixGenericPbk_V1.sbml");
+    // Recording the timestamp at the start of the code
+    auto beg = std::chrono::high_resolution_clock::now();
+    auto step = beg;
 
+    // Loading SBML file
+    std::ifstream sbmlFile("Resources\\EuroMixGenericPbk_V1.sbml");
     std::stringstream ss;
     std::string line;
     while (std::getline(sbmlFile, line)) {
         ss << line;
     }
-
     auto sbmlEuroMix = ss.str();
+
+    auto nextStep = std::chrono::high_resolution_clock::now();
+    auto duration = std::chrono::duration_cast<std::chrono::milliseconds> (nextStep - step);
+    std::cout << "[Loading SBML file] " << duration.count() << " (ms)" << std::endl;
+    step = nextStep;
 
     //RoadRunner roadRunner(getSBMLString());
     RoadRunner roadRunner(sbmlEuroMix);
 
-    // add two events
+    nextStep = std::chrono::high_resolution_clock::now();
+    duration = std::chrono::duration_cast<std::chrono::milliseconds> (nextStep - step);
+    std::cout << "[Initialize RoadRunner with SBML file] " << duration.count() << " (ms)" << std::endl;
+    step = nextStep;
+
+    // add 10 events and event assignments
     const int nrEvents = 10;
     for (int i = 0; i < 10; ++i) {
         std::stringstream sstrEv;
@@ -95,7 +108,22 @@ int main()
 
     roadRunner.regenerateModel(true, true);
 
+    nextStep = std::chrono::high_resolution_clock::now();
+    duration = std::chrono::duration_cast<std::chrono::milliseconds> (nextStep - step);
+    std::cout << "[Add events and regenerate model] " << duration.count() << " (ms)" << std::endl;
+    step = nextStep;
+
     const ls::DoubleMatrix* result = roadRunner.simulate(0, 1, 101);
+
+    nextStep = std::chrono::high_resolution_clock::now();
+    duration = std::chrono::duration_cast<std::chrono::milliseconds> (nextStep - step);
+    std::cout << "[Simulate model] " << duration.count() << " (ms)" << std::endl;
+    step = nextStep;
+
+    // Recording the timestamp at the start of the code
+    auto end = std::chrono::high_resolution_clock::now();
+    duration = std::chrono::duration_cast<std::chrono::milliseconds> (end - beg);
+    std::cout << "Total elapsed Time: " << duration.count() << " (ms)" << std::endl;
 
 
     const unsigned rows = result->numRows();
@@ -134,12 +162,8 @@ int main()
         }
     }
 
-    //roadRunner.addEvent()
     const bool loaded = roadRunner.isModelLoaded();
     const string name = roadRunner.getModelName();
-    //roadRunner.reset();
 
     return 0;
 }
-
-
