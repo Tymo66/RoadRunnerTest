@@ -250,7 +250,7 @@ namespace rr {
             SIMULATEOPTIONS_MINIMUM_TIMESTEP,
 
             /**
-             * Specify The Maximum Time Step Size That The Internaal Integrator
+             * Specify The Maximum Time Step Size That The Internal Integrator
              * Will Use. Uses Integrator Estimated Value If <= 0.
              * see SimulateOptions::maximumTimeStep
              */
@@ -464,7 +464,6 @@ namespace rr {
              * for the random seed.
              */
             RANDOM_SEED,
-
             /**
              * use new numpy arrays with row/column names
              * experimental
@@ -485,7 +484,7 @@ namespace rr {
 
 
             /**
-             * Relax SBML resrictions.
+             * Relax SBML restrictions.
              *
              * Allows some idiosyncrasies of e.g. JDesigner that libSBML does not
              * officially support. See:
@@ -550,6 +549,21 @@ namespace rr {
              * Defaults to the number of cores
              */
             LLJIT_NUM_THREADS,
+
+            /**
+             * The flux threshold when calculating the scaled control coefficients of fluxes.
+             */
+            METABOLIC_CONTROL_ANALYSIS_FLUX_THRESHOLD,
+
+            /**
+             * The differential step size when calculating the scaled control coefficients of fluxes.
+             */
+            METABOLIC_CONTROL_ANALYSIS_DIFFERENTIAL_STEP_SIZE,
+
+            /**
+             * The differential step size when calculating the scaled control coefficients of fluxes.
+             */
+            METABOLIC_CONTROL_ANALYSIS_STEADY_STATE_THRESHOLD,
 
             /**
              * Needs to be the last item in the enum, no mater how many

@@ -5,7 +5,7 @@ includedir=${prefix}/include/rr
 
 Name: libRoadRunner
 Description: SBML-compliant simulation engine
-Version: 2.4.0
+Version: 2.7.0
 Libs: -L${libdir} -lroadrunner
 Libs.private: 
 Cflags: -I${includedir}

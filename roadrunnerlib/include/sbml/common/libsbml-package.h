@@ -53,11 +53,11 @@
 #define PACKAGE_NAME "libSBML"
 
 /* Define to the full name and version of this package. */
-#define PACKAGE_STRING "libSBML 5.19.5"
+#define PACKAGE_STRING "libSBML 5.20.2"
 
 /* Define to the one symbol short name of this package. */
 #define PACKAGE_TARNAME "libsbml"
 
 /* Define to the version of this package. */
-#define PACKAGE_VERSION "5.19.5"
+#define PACKAGE_VERSION "5.20.2"
 

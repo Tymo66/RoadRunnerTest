@@ -269,7 +269,7 @@ XML_ParserCreate_MM(const XML_Char *encoding,
                     const XML_Memory_Handling_Suite *memsuite,
                     const XML_Char *namespaceSeparator);
 
-/* Prepare a parser object to be re-used.  This is particularly
+/* Prepare a parser object to be reused.  This is particularly
    valuable when memory allocation overhead is disproportionately high,
    such as when a large number of small documnents need to be parsed.
    All handlers are cleared from the parser, except for the
@@ -951,7 +951,7 @@ XMLPARSEAPI(XML_Index) XML_GetCurrentByteIndex(XML_Parser parser);
 XMLPARSEAPI(int)
 XML_GetCurrentByteCount(XML_Parser parser);
 
-/* If XML_CONTEXT_BYTES is defined, returns the input buffer, sets
+/* If XML_CONTEXT_BYTES is >=1, returns the input buffer, sets
    the integer pointed to by offset to the offset within this buffer
    of the current parse position, and sets the integer pointed to by size
    to the size of this buffer (the number of input bytes). Otherwise
@@ -1051,11 +1051,11 @@ XML_SetBillionLaughsAttackProtectionActivationThreshold(
 #endif
 
 /* Expat follows the semantic versioning convention.
-   See http://semver.org.
+   See https://semver.org
 */
 #define XML_MAJOR_VERSION 2
-#define XML_MINOR_VERSION 4
-#define XML_MICRO_VERSION 8
+#define XML_MINOR_VERSION 5
+#define XML_MICRO_VERSION 0
 
 #ifdef __cplusplus
 }
