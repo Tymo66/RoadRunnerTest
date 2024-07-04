@@ -129,7 +129,14 @@
       <AdditionalLibraryDirectories>..\roadrunnerlib\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy $(MSBuildProjectDirectory)\..\roadrunnerlib\bin\x64\Debug\roadrunnerd.* $(OutDir) /d /q</Command>
+      <Command>pushd $(MSBuildProjectDirectory)\..\roadrunnerlib\bin\x64\Debug
+
+tar -xf roadrunnerd.zip
+tar -xf roadrunner_c_apid.zip
+xcopy roadrunnerd.dll $(OutDir) /d /q
+xcopy roadrunnerd.pdb $(OutDir) /d /q
+
+popd</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
