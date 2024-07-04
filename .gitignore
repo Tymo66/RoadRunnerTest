@@ -21,6 +21,7 @@ x86/*
 bld/*
 [Oo]bj/*
 !roadrunnerlib/
+roadrunnerlib/bin/x64/Debug/*.dll
 
 
 # C++ build outputs

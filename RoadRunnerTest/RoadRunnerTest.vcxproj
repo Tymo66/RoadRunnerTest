@@ -161,6 +161,9 @@ popd</Command>
   <ItemGroup>
     <ClCompile Include="RoadRunnerTest.cpp" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\EuroMixGenericPbk_V1.sbml" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

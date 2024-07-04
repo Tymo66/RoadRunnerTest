@@ -2,7 +2,9 @@
 //
 
 #include <iostream>
+#include <fstream>
 #include "rr/rrRoadRunner.h"
+#include "rr/rrExecutableModel.h"
 
 using namespace rr;
 
@@ -63,10 +65,38 @@ static std::string getSBMLString() {
 
 int main()
 {
-    RoadRunner roadRunner(getSBMLString());
+    std::ifstream sbmlFile("Resources\\EuroMixGenericPbk_V1.sbml");
+
+    std::stringstream ss;
+    std::string line;
+    while (std::getline(sbmlFile, line)) {
+        ss << line;
+    }
+
+    auto sbmlEuroMix = ss.str();
+
+    //RoadRunner roadRunner(getSBMLString());
+    RoadRunner roadRunner(sbmlEuroMix);
+
+    // add two events
+    const int nrEvents = 10;
+    for (int i = 0; i < 10; ++i) {
+        std::stringstream sstrEv;
+        sstrEv << "ev_" << i + 1;
+        std::stringstream sstrTrigger;
+        sstrTrigger << "time > " << i * 24;
+
+        roadRunner.addEvent(sstrEv.str(), false, sstrTrigger.str(), false);
+
+        std::stringstream sstrSpeciesId;
+        sstrSpeciesId << "QGut + " << 0.00085423766457263053;
+        roadRunner.addEventAssignment(sstrEv.str(), "QGut", sstrSpeciesId.str(), false);
+    }
+
+    roadRunner.regenerateModel(true, true);
+
     const ls::DoubleMatrix* result = roadRunner.simulate(0, 1, 101);
 
-    double value = (*result)(0, 0);
 
     const unsigned rows = result->numRows();
     const unsigned cols = result->numCols();
@@ -75,6 +105,26 @@ int main()
             std::cout << "Value [" << r << ", " << c << "] = " << (*result)(r, c) << std::endl;
         }
     }
+
+    rr::ExecutableModel* pModel = roadRunner.getModel();
+    //pModel->getEventIds
+    //rrllvm::LLVMExecutableModel* pLlvmeModel = reinterpret_cast<rrllvm::LLVMExecutableModel*>(pModel);
+
+    std::list < std::string> eventIdsBefore;
+    pModel->getEventIds(eventIdsBefore);
+
+
+    roadRunner.reset(int(SelectionRecord::ALL));
+
+    std::list < std::string> eventIdsAfter;
+    pModel->getEventIds(eventIdsAfter);
+
+    roadRunner.clearModel();
+    // after this the model crashes, has become a different instance
+
+    //std::list < std::string> eventIdsAfterClearModel;
+    //pModel->getEventIds(eventIdsAfterClearModel);
+
 
     RoadRunner roadRunner2(getSBMLString());
     const ls::DoubleMatrix* result2 = roadRunner2.simulate(0, 1, 101);
@@ -92,13 +142,4 @@ int main()
     return 0;
 }
 
-// Run program: Ctrl + F5 or Debug > Start Without Debugging menu
-// Debug program: F5 or Debug > Start Debugging menu
 
-// Tips for Getting Started: 
-//   1. Use the Solution Explorer window to add/manage files
-//   2. Use the Team Explorer window to connect to source control
-//   3. Use the Output window to see build output and other messages
-//   4. Use the Error List window to view errors
-//   5. Go to Project > Add New Item to create new code files, or Project > Add Existing Item to add existing code files to the project
-//   6. In the future, to open this project again, go to File > Open > Project and select the .sln file
