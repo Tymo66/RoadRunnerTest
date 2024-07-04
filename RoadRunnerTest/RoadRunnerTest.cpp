@@ -64,9 +64,30 @@ static std::string getSBMLString() {
 int main()
 {
     RoadRunner roadRunner(getSBMLString());
-    const ls::DoubleMatrix result = *roadRunner.simulate(0, 1, 101);
+    const ls::DoubleMatrix* result = roadRunner.simulate(0, 1, 101);
 
-    //std::cout << *roadRunner.simulate(0, 1, 101) << std::endl;
+    double value = (*result)(0, 0);
+
+    const unsigned rows = result->numRows();
+    const unsigned cols = result->numCols();
+    for (int r = 0; r < rows; ++r) {
+        for (int c = 0; c < cols; ++c) {
+            std::cout << "Value [" << r << ", " << c << "] = " << (*result)(r, c) << std::endl;
+        }
+    }
+
+    RoadRunner roadRunner2(getSBMLString());
+    const ls::DoubleMatrix* result2 = roadRunner2.simulate(0, 1, 101);
+    for (int r = 0; r < rows; ++r) {
+        for (int c = 0; c < cols; ++c) {
+            std::cout << "Value [" << r << ", " << c << "] = " << (*result2)(r, c) << std::endl;
+        }
+    }
+
+    //roadRunner.addEvent()
+    const bool loaded = roadRunner.isModelLoaded();
+    const string name = roadRunner.getModelName();
+    //roadRunner.reset();
 
     return 0;
 }
