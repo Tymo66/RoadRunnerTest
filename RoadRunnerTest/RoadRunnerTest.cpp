@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <fstream>
+#include <conio.h>
 #include "rr/rrRoadRunner.h"
 #include "rr/rrExecutableModel.h"
 
@@ -70,7 +71,7 @@ int main()
     auto step = beg;
 
     // Loading SBML file
-    std::ifstream sbmlFile("Resources\\EuroMixGenericPbk_V1.sbml");
+    std::ifstream sbmlFile("EuroMixGenericPbk_V1.sbml");
     std::stringstream ss;
     std::string line;
     while (std::getline(sbmlFile, line)) {
@@ -106,14 +107,19 @@ int main()
         roadRunner.addEventAssignment(sstrEv.str(), "QGut", sstrSpeciesId.str(), false);
     }
 
+    nextStep = std::chrono::high_resolution_clock::now();
+    duration = std::chrono::duration_cast<std::chrono::milliseconds> (nextStep - step);
+    std::cout << "[Add events] " << duration.count() << " (ms)" << std::endl;
+    step = nextStep;
+
     roadRunner.regenerateModel(true, true);
 
     nextStep = std::chrono::high_resolution_clock::now();
     duration = std::chrono::duration_cast<std::chrono::milliseconds> (nextStep - step);
-    std::cout << "[Add events and regenerate model] " << duration.count() << " (ms)" << std::endl;
+    std::cout << "[Regenerate model] " << duration.count() << " (ms)" << std::endl;
     step = nextStep;
 
-    const ls::DoubleMatrix* result = roadRunner.simulate(0, 1, 101);
+    const ls::DoubleMatrix* result = roadRunner.simulate(0, 240, 241);
 
     nextStep = std::chrono::high_resolution_clock::now();
     duration = std::chrono::duration_cast<std::chrono::milliseconds> (nextStep - step);
@@ -124,7 +130,7 @@ int main()
     auto end = std::chrono::high_resolution_clock::now();
     duration = std::chrono::duration_cast<std::chrono::milliseconds> (end - beg);
     std::cout << "Total elapsed Time: " << duration.count() << " (ms)" << std::endl;
-
+    std::cout << std::endl;
 
     const unsigned rows = result->numRows();
     const unsigned cols = result->numCols();
@@ -155,15 +161,21 @@ int main()
 
 
     RoadRunner roadRunner2(getSBMLString());
-    const ls::DoubleMatrix* result2 = roadRunner2.simulate(0, 1, 101);
-    for (int r = 0; r < rows; ++r) {
-        for (int c = 0; c < cols; ++c) {
+    const ls::DoubleMatrix* result2 = roadRunner2.simulate(0, 240, 241);
+
+    const unsigned rows2 = result->numRows();
+    const unsigned cols2 = result->numCols();
+    for (int r = 0; r < rows2; ++r) {
+        for (int c = 0; c < cols2; ++c) {
             std::cout << "Value [" << r << ", " << c << "] = " << (*result2)(r, c) << std::endl;
         }
     }
 
     const bool loaded = roadRunner.isModelLoaded();
     const string name = roadRunner.getModelName();
+
+    std::cout << "Type any key to exit ...";
+    const int res = getch();
 
     return 0;
 }

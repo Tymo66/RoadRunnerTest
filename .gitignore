@@ -30,6 +30,8 @@ roadrunnerlib/bin/x64/Debug/*.dll
 *.recipe
 *.FileListAbsolute.txt
 *.idb
+*.iobj
+*.ipdb
 
 # Visual Studio / VS Code cache/options directory
 .vs/
